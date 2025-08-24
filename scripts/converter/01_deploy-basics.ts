@@ -21,12 +21,12 @@ const main = async () => {
 	const babyJubJub = await deployLibrary(deployer);
 
 	// also deploys new erc20
-	const erc20Factory = await ethers.getContractFactory("SimpleERC20");
+	const erc20Factory = await ethers.getContractFactory("contracts/tokens/SimpleERC20.sol:SimpleERC20");
 	const erc20 = await erc20Factory.deploy("AvaxTest", "AVAXTEST", 18);
 	await erc20.waitForDeployment();
 
 	// mints some amount to deployer as well
-	const tx = await erc20.mint(deployer.address, ethers.parseEther("10000"));
+	const tx = await (erc20 as any).mint(deployer.address, ethers.parseEther("10000"));
 	await tx.wait();
 
 	console.log("ERC20 deployed at:", erc20.target);

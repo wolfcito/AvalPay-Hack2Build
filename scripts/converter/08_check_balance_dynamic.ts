@@ -34,9 +34,9 @@ const main = async () => {
     console.log("TestERC20:", testERC20Address);
     
     // Connect to contracts
-    const encryptedERC = await ethers.getContractAt("EncryptedERC", encryptedERCAddress, wallet);
-    const testERC20 = await ethers.getContractAt("SimpleERC20", testERC20Address, wallet);
-    const registrar = await ethers.getContractAt("Registrar", registrarAddress, wallet);
+    const encryptedERC = await ethers.getContractAt("EncryptedERC", encryptedERCAddress);
+    const testERC20 = await ethers.getContractAt("SimpleERC20", testERC20Address);
+    const registrar = await ethers.getContractAt("Registrar", registrarAddress);
     
     try {
         // 1. Check if user is registered

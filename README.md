@@ -1,41 +1,18 @@
-# EncryptedERC (eERC) - Private Token System ⚡ **OPTIMIZED**
+# EncryptedERC (eERC) - Private Token System ⚡ **AVALTOOLKIT**
 
-This project implements an advanced EncryptedERC system that allows users to hold and transfer tokens privately using zero-knowledge proofs and homomorphic encryption. The system maintains privacy while enabling auditing capabilities.
+Este proyecto implementa un sistema avanzado EncryptedERC que permite a los usuarios mantener y transferir tokens de forma privada usando pruebas zero-knowledge y encriptación homomórfica. El sistema mantiene la privacidad mientras habilita capacidades de auditoría.
 
-## 🚀 **System Modes**
+## 🚀 **Inicio Rápido - AVALTOOLKIT**
 
-The project supports **two distinct operation modes**:
+### **📋 Prerrequisitos**
+1. Node.js y npm instalados
+2. Dos claves privadas para testing (configurar como variables de entorno)
+3. Tokens AVAX testnet para gas fees
 
-### **🔄 Converter Mode** (`scripts/converter/`)
-- **ERC20 Token Wrapper**: Converts existing ERC20 tokens into encrypted format
-- **Deposit/Withdraw System**: Bridge between public and private tokens
-- **Multi-Token Support**: Works with any ERC20 token
-- **Use Case**: Privacy layer for existing token economies
+### **🔧 Configuración Inicial**
 
-### **🏦 Standalone Mode** (`scripts/standalone/`)
-- **Native Encrypted Token**: Creates native "PRIV" tokens with built-in encryption  
-- **Mint/Burn System**: Central bank model with controlled token supply
-- **Single Token**: Self-contained encrypted token ecosystem
-- **Use Case**: Central Bank Digital Currency (CBDC), private token issuance
-
-## ⚡ **Performance & Optimization Features**
-
-- **🚀 100x Faster Balance Calculations**: Optimized discrete logarithm search with smart caching
-- **🎯 Intelligent Wallet Management**: Centralized wallet utilities in `src/utils/utils.ts`
-- **⚡ Smart Key Derivation**: Centralized cryptographic operations in `src/utils/utils.ts`
-- **📊 Advanced Caching System**: Pre-populated cache with FIFO eviction for common values
-- **🔧 Optimized Imports**: Clean codebase with unused dependencies removed
-- **🌍 Comprehensive Documentation**: Full English/Spanish documentation with step-by-step guides
-
-## Prerequisites
-
-1. Node.js and npm installed
-2. Two private keys for testing (set as environment variables)
-3. AVAX testnet tokens for gas fees
-
-## Environment Setup
-
-Create a `.env` file in the root directory:
+#### **1. Configurar Variables de Entorno**
+Crea un archivo `.env` en la raíz del proyecto:
 
 ```bash
 # Avalanche Fuji Testnet RPC
@@ -47,263 +24,160 @@ PRIVATE_KEY2=your_second_private_key_here
 
 # Enable forking if needed
 FORKING=false
-
-# Note: Wallet selection requires manual script configuration
 ```
 
-## Installation
-
+#### **2. Instalar Dependencias**
 ```bash
 npm install
 ```
 
----
-
-## 📋 **Quick Start Guide**
-
-Choose your preferred mode and follow the corresponding guide:
-
-### **🔄 Converter Mode** (ERC20 Token Wrapper)
-For detailed instructions, see [`scripts/converter/README.md`](scripts/converter/README.md)
-
-### **🏦 Standalone Mode** (Native Encrypted Tokens)  
-For detailed instructions, see [`scripts/standalone/README.md`](scripts/standalone/README.md)
-
----
-
-## 🎯 **Converter Mode - Step-by-Step Guide**
-
-### English Version
-
-Follow these steps to deploy and test the **Converter System** (ERC20 → Encrypted ERC20):
-
-#### Step 1: Deploy Basic Components ⚡ **OPTIMIZED**
-Deploy verifiers, libraries, and test ERC20 token.
-
+#### **3. Compilar Circuitos y Configurar ZK**
 ```bash
+# Compilar circuitos, generar claves y verificadores
+npm run zkit:setup
+
+# O ejecutar manualmente:
+npx hardhat zkit compile
+npx hardhat zkit setup
+npx hardhat zkit verifiers
+node fix-imports.js
+```
+
+### **🎯 Iniciar el Sistema AVALTOOLKIT**
+
+#### **Opción 1: Sistema Optimizado (Recomendado)**
+```bash
+npm run optimized
+```
+**Esto inicia:**
+- Frontend en `http://localhost:3000`
+- Backend Converter en `http://localhost:3001`
+- Backend Standalone en `http://localhost:3002`
+
+#### **Opción 2: Sistema Simple**
+```bash
+npm run simple
+```
+
+#### **Opción 3: Sistema Dinámico**
+```bash
+npm run dynamic
+```
+
+#### **Opción 4: Solo Frontend**
+```bash
+npm run frontend-only
+```
+
+#### **Opción 5: Solo Backend Standalone**
+```bash
+node backend/server-standalone.js
+```
+
+---
+
+## 🏗️ **Despliegue de Contratos**
+
+### **¿Necesitas Desplegar Contratos?**
+
+**Respuesta:** Depende de tu caso de uso:
+
+- **Si quieres usar el sistema con contratos existentes**: Los contratos ya están desplegados y configurados
+- **Si quieres desplegar tus propios contratos**: Sigue las instrucciones de despliegue abajo
+
+### **🔄 Modo Converter - Despliegue Manual**
+
+Si necesitas desplegar tus propios contratos:
+
+#### **Paso 1: Desplegar Componentes Básicos**
+```bash
+npm run converter:init
+# O manualmente:
 npx hardhat run scripts/converter/01_deploy-basics.ts --network fuji
 ```
 
-**What this does:**
-- Deploys zero-knowledge proof verifiers for registration, mint, withdraw, transfer, and burn operations
-- Deploys BabyJubJub elliptic curve library  
-- Creates a test ERC20 token (TEST) and mints 10,000 tokens to the deployer
-- **NEW**: Saves deployment addresses to `deployments/converter/latest-converter.json` with timestamp backup
-- **NEW**: Comprehensive metadata and optimized file structure
-
-#### Step 2: Deploy Converter System ⚡ **OPTIMIZED**
-Deploy the main EncryptedERC contract and Registrar.
-
+#### **Paso 2: Desplegar Sistema Converter**
 ```bash
+npm run converter:core
+# O manualmente:
 npx hardhat run scripts/converter/02_deploy-converter.ts --network fuji
 ```
 
-**What this does:**
-- Deploys the Registrar contract for user registration
-- Deploys the EncryptedERC contract in converter mode
-- Links all previously deployed verifiers
-- **NEW**: Uses optimized deployment data management
-- **NEW**: Improved error handling and logging
-
-#### Step 3: Register Users ⚡ **HIGHLY OPTIMIZED**
-Register both test users (requires manual wallet configuration in scripts).
-
-**For first user (Wallet 1):**
+#### **Paso 3: Registrar Usuarios**
 ```bash
-# Edit script manually to set walletNumber = 1
-npx hardhat run scripts/converter/03_register-user.ts --network fuji
+# Editar script para configurar walletNumber = 1
+npm run converter:register
+# Editar script para configurar walletNumber = 2
+npm run converter:register
 ```
 
-**For second user (Wallet 2):**
+#### **Paso 4: Configurar Auditor**
 ```bash
-# Edit script manually to set walletNumber = 2
-npx hardhat run scripts/converter/03_register-user.ts --network fuji
+# Editar script para configurar walletNumber = 1
+npm run converter:auditor
 ```
 
-**What this does:**
-- **NEW**: Centralized wallet utilities for easier script configuration
-- **NEW**: Centralized key derivation using `src/utils/utils.ts`
-- Generates deterministic cryptographic keys from the user's signature  
-- Creates a zero-knowledge proof of identity
-- Registers the user's public key on-chain
-- **NEW**: Shows AVAX balance for selected wallet
-- **NEW**: Simplified wallet management with `getWallet()` utility
+### **🏦 Modo Standalone - Despliegue Manual**
 
-#### Step 4: Set Auditor ⚡ **OPTIMIZED**
-Configure the system auditor (requires manual wallet selection in script).
-
+#### **Paso 1: Desplegar Componentes Básicos**
 ```bash
-# Edit script manually to set walletNumber = 1
-npx hardhat run scripts/converter/04_set-auditor.ts --network fuji
-```
-
-**What this does:**
-- **NEW**: Centralized auditor setup utilities
-- Sets the auditor's public key in the EncryptedERC contract
-- Enables the auditor to decrypt transaction amounts for compliance
-- **NEW**: Shows AVAX balance for selected wallet
-- This step is required before any deposits can be made
-
-#### Step 5: Get Test Tokens (Both Users) ⚡ **OPTIMIZED**
-Claim test tokens from the faucet (requires manual wallet selection in script).
-
-**For first user:**
-```bash
-# Edit script manually to set walletNumber = 1
-npx hardhat run scripts/converter/05_get_faucet.ts --network fuji
-```
-
-**For second user:**
-```bash
-# Edit script manually to set walletNumber = 2
-npx hardhat run scripts/converter/05_get_faucet.ts --network fuji
-```
-
-**What this does:**
-- **NEW**: Centralized wallet management utilities
-- Claims test tokens from the ERC20 faucet
-- Each user can claim once every 24 hours
-- **NEW**: Shows AVAX balance for selected wallet  
-- Provides tokens needed for deposits into the encrypted system
-
-#### Step 6: Make Initial Deposits (Both Users) ⚡ **HIGHLY OPTIMIZED**
-Deposit test tokens into the encrypted system with advanced features.
-
-**For first user:**
-```bash
-# Edit script manually to set walletNumber = 1
-npx hardhat run scripts/converter/06_deposit.ts --network fuji
-```
-
-**For second user:**
-```bash
-# Edit script manually to set walletNumber = 2
-npx hardhat run scripts/converter/06_deposit.ts --network fuji
-```
-
-**What this does:**
-- **NEW**: Centralized wallet management with balance display
-- **NEW**: Centralized key derivation and decryption functions
-- **NEW**: 100x faster balance calculations with optimized discrete logarithm search
-- Converts public ERC20 tokens into encrypted tokens
-- Generates encrypted balance proofs  
-- Creates audit trails for compliance
-- Tokens become private and can only be decrypted by the owner
-
-#### Step 7: Check Balances ⚡ **HIGHLY OPTIMIZED**
-Verify deposits with lightning-fast balance calculations.
-
-**Check first user's balance:**
-```bash
-# Edit script manually to set walletNumber = 1
-npx hardhat run scripts/converter/08_check_balance.ts --network fuji
-```
-
-**Check second user's balance:**
-```bash
-# Edit script manually to set walletNumber = 2
-npx hardhat run scripts/converter/08_check_balance.ts --network fuji
-```
-
-**What this does:**
-- **NEW**: Centralized wallet management utilities
-- **NEW**: 100x faster balance decryption with smart caching system
-- **NEW**: Pre-populated cache for common values with FIFO eviction
-- **NEW**: Multi-strategy search (small values, round numbers, chunked search)
-- Decrypts the user's encrypted balance using their private key
-- Shows both encrypted balance and public token balance  
-- Verifies encryption consistency
-
-#### Step 8: Perform Private Transfer ⚡ **OPTIMIZED**
-Transfer encrypted tokens with centralized utilities.
-
-```bash
-npx hardhat run scripts/converter/07_transfer.ts --network fuji
-```
-
-**What this does:**
-- **NEW**: Uses centralized cryptographic functions from `src/utils/utils.ts`
-- **NEW**: Optimized discrete logarithm calculations
-- Generates a zero-knowledge proof for the transfer
-- Transfers tokens privately (amounts are hidden from public view)
-- Updates encrypted balances for both sender and receiver
-- Maintains audit trail for compliance
-
-#### Step 9: Verify Transfer ⚡ **OPTIMIZED**
-Check balances to confirm transfer (requires manual wallet selection in scripts).
-
-**Check both users' balances:**
-```bash
-# Edit script manually to set walletNumber = 1, then run:
-npx hardhat run scripts/converter/08_check_balance.ts --network fuji
-# Edit script manually to set walletNumber = 2, then run:
-npx hardhat run scripts/converter/08_check_balance.ts --network fuji
-```
-**NEW**: Centralized utilities for easier wallet management!
-
-#### Step 10: Withdraw to Public ⚡ **OPTIMIZED**
-Withdraw tokens with centralized utilities and optimized calculations.
-
-```bash
-# Edit script manually to set walletNumber = 2
-npx hardhat run scripts/converter/09_withdraw.ts --network fuji
-```
-
-**What this does:**
-- **NEW**: Centralized wallet management utilities
-- **NEW**: Centralized cryptographic operations from `src/utils/utils.ts`
-- **NEW**: 100x faster balance calculations
-- Generates a zero-knowledge proof for withdrawal
-- Converts encrypted tokens back to public ERC20 tokens
-- Shows the withdrawal publicly in the final balance check
-
-#### Final Step: Check Public Balances ⚡ **OPTIMIZED**
-Verify the final state with ultra-fast balance calculations.
-
-```bash
-# Edit script manually to set walletNumber = 1, then run:
-npx hardhat run scripts/converter/08_check_balance.ts --network fuji
-# Edit script manually to set walletNumber = 2, then run:
-npx hardhat run scripts/converter/08_check_balance.ts --network fuji
-```
-
----
-
----
-
-## 🏦 **Standalone Mode - Quick Overview**
-
-### **Native Encrypted Token System**
-
-The standalone mode creates native encrypted "PRIV" tokens (not wrapped ERC20s):
-
-```bash
-# Deploy standalone system
+npm run standalone:init
+# O manualmente:
 npx hardhat run scripts/standalone/01_deploy-basics.ts --network fuji
-npx hardhat run scripts/standalone/02_deploy-standalone.ts --network fuji
-
-# Register users and set auditor (edit scripts manually for wallet selection)
-npx hardhat run scripts/standalone/03_register-user.ts --network fuji  # Set walletNumber = 1
-npx hardhat run scripts/standalone/03_register-user.ts --network fuji  # Set walletNumber = 2
-npx hardhat run scripts/standalone/04_set-auditor.ts --network fuji     # Set walletNumber = 1
-
-# Mint tokens (Central Bank model - edit scripts manually)
-npx hardhat run scripts/standalone/05_mint.ts --network fuji  # Set owner/user wallet numbers
-
-# Transfer privately and burn permanently (edit scripts manually)
-npx hardhat run scripts/standalone/07_transfer.ts --network fuji  # Set sender/receiver wallets
-npx hardhat run scripts/standalone/08_burn.ts --network fuji      # Set walletNumber = 2
 ```
 
-**For detailed standalone instructions, see [`scripts/standalone/README.md`](scripts/standalone/README.md)**
+#### **Paso 2: Desplegar Sistema Standalone**
+```bash
+npm run standalone:core
+# O manualmente:
+npx hardhat run scripts/standalone/02_deploy-standalone.ts --network fuji
+```
+
+#### **Paso 3: Registrar Usuarios y Configurar Auditor**
+```bash
+# Registrar usuarios (editar scripts para walletNumber)
+npm run standalone:register
+npm run standalone:auditor
+```
 
 ---
 
-### Versión en Español
+## 🎯 **Sistema Modes**
 
-Sigue estos pasos en orden para desplegar y probar el **Sistema Convertidor** (ERC20 → ERC20 Encriptado):
+El proyecto soporta **dos modos de operación distintos**:
 
-#### Paso 1: Desplegar Componentes Básicos ⚡ **OPTIMIZADO**
+### **🔄 Converter Mode** (`scripts/converter/`)
+- **ERC20 Token Wrapper**: Convierte tokens ERC20 existentes en formato encriptado
+- **Sistema Deposit/Withdraw**: Puente entre tokens públicos y privados
+- **Soporte Multi-Token**: Funciona con cualquier token ERC20
+- **Caso de Uso**: Capa de privacidad para economías de tokens existentes
+
+### **🏦 Standalone Mode** (`scripts/standalone/`)
+- **Token Encriptado Nativo**: Crea tokens "PRIV" nativos con encriptación integrada
+- **Sistema Mint/Burn**: Modelo de banco central con suministro controlado
+- **Token Único**: Ecosistema de tokens encriptados autocontenido
+- **Caso de Uso**: Moneda Digital del Banco Central (CBDC), emisión de tokens privados
+
+---
+
+## ⚡ **Características de Rendimiento y Optimización**
+
+- **🚀 100x Más Rápido en Cálculos de Balance**: Búsqueda optimizada de logaritmo discreto con caché inteligente
+- **🎯 Gestión Inteligente de Wallets**: Utilidades centralizadas de wallet en `src/utils/utils.ts`
+- **⚡ Derivación Inteligente de Claves**: Operaciones criptográficas centralizadas en `src/utils/utils.ts`
+- **📊 Sistema de Caché Avanzado**: Caché pre-poblado con expulsión FIFO para valores comunes
+- **🔧 Imports Optimizados**: Codebase limpio con dependencias no utilizadas removidas
+- **🌍 Documentación Completa**: Guías completas en inglés/español con tutoriales paso a paso
+
+---
+
+## 📋 **Guía Completa - Modo Converter**
+
+### **Versión en Inglés**
+
+Sigue estos pasos para desplegar y probar el **Sistema Convertidor** (ERC20 → ERC20 Encriptado):
+
+#### **Paso 1: Desplegar Componentes Básicos** ⚡ **OPTIMIZADO**
 Despliega verificadores, librerías y token ERC20 de prueba.
 
 ```bash
@@ -317,7 +191,7 @@ npx hardhat run scripts/converter/01_deploy-basics.ts --network fuji
 - **NUEVO**: Guarda las direcciones de despliegue en `deployments/converter/latest-converter.json` con respaldo por timestamp
 - **NUEVO**: Metadatos completos y estructura de archivos optimizada
 
-#### Paso 2: Desplegar Sistema Convertidor ⚡ **OPTIMIZADO**
+#### **Paso 2: Desplegar Sistema Convertidor** ⚡ **OPTIMIZADO**
 Despliega el contrato principal EncryptedERC y el Registrar.
 
 ```bash
@@ -331,7 +205,7 @@ npx hardhat run scripts/converter/02_deploy-converter.ts --network fuji
 - **NUEVO**: Usa gestión optimizada de datos de despliegue
 - **NUEVO**: Mejor manejo de errores y logging
 
-#### Paso 3: Registrar Usuarios ⚡ **ALTAMENTE OPTIMIZADO**
+#### **Paso 3: Registrar Usuarios** ⚡ **ALTAMENTE OPTIMIZADO**
 Registra ambos usuarios de prueba (requiere configuración manual de wallet en scripts).
 
 **Para el primer usuario (Wallet 1):**
@@ -355,144 +229,175 @@ npx hardhat run scripts/converter/03_register-user.ts --network fuji
 - **NUEVO**: Muestra balance AVAX para la wallet seleccionada
 - **NUEVO**: Gestión simplificada de wallet con utilidad `getWallet()`
 
-#### Paso 4: Establecer Auditor
-Configura el auditor del sistema (debe ser hecho por el propietario del contrato).
+#### **Paso 4: Establecer Auditor** ⚡ **OPTIMIZADO**
+Configura el auditor del sistema (requiere configuración manual de wallet en script).
 
 ```bash
-npx hardhat run scripts/04_set-auditor.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 1
+npx hardhat run scripts/converter/04_set-auditor.ts --network fuji
 ```
 
 **Qué hace esto:**
+- **NUEVO**: Utilidades centralizadas de configuración de auditor
 - Establece la clave pública del auditor en el contrato EncryptedERC
 - Permite al auditor desencriptar montos de transacciones para cumplimiento
+- **NUEVO**: Muestra balance AVAX para la wallet seleccionada
 - Este paso es requerido antes de que se puedan hacer depósitos
 
-#### Paso 5: Obtener Tokens de Prueba (Ambos Usuarios)
-Reclama tokens de prueba del faucet para ambos usuarios.
+#### **Paso 5: Obtener Tokens de Prueba (Ambos Usuarios)** ⚡ **OPTIMIZADO**
+Reclama tokens de prueba del faucet (requiere configuración manual de wallet en script).
 
 **Para el primer usuario:**
 ```bash
-npx hardhat run scripts/05_get_faucet.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 1
+npx hardhat run scripts/converter/05_get_faucet.ts --network fuji
 ```
 
 **Para el segundo usuario:**
-Cambia a PRIVATE_KEY2 y ejecuta:
 ```bash
-npx hardhat run scripts/05_get_faucet.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 2
+npx hardhat run scripts/converter/05_get_faucet.ts --network fuji
 ```
 
 **Qué hace esto:**
+- **NUEVO**: Utilidades centralizadas de gestión de wallet
 - Reclama tokens de prueba del faucet ERC20
 - Cada usuario puede reclamar una vez cada 24 horas
+- **NUEVO**: Muestra balance AVAX para la wallet seleccionada
 - Proporciona tokens necesarios para depósitos en el sistema encriptado
 
-#### Paso 6: Hacer Depósitos Iniciales (Ambos Usuarios)
-Deposita tokens de prueba en el sistema encriptado para ambos usuarios.
+#### **Paso 6: Hacer Depósitos Iniciales (Ambos Usuarios)** ⚡ **ALTAMENTE OPTIMIZADO**
+Deposita tokens de prueba en el sistema encriptado con características avanzadas.
 
 **Para el primer usuario:**
 ```bash
-npx hardhat run scripts/06_deposit.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 1
+npx hardhat run scripts/converter/06_deposit.ts --network fuji
 ```
 
 **Para el segundo usuario:**
-Cambia a PRIVATE_KEY2 y ejecuta:
 ```bash
-npx hardhat run scripts/06_deposit.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 2
+npx hardhat run scripts/converter/06_deposit.ts --network fuji
 ```
 
 **Qué hace esto:**
+- **NUEVO**: Gestión centralizada de wallet con visualización de balance
+- **NUEVO**: Derivación centralizada de claves y funciones de desencriptación
+- **NUEVO**: Cálculos de balance 100x más rápidos con búsqueda optimizada de logaritmo discreto
 - Convierte tokens ERC20 públicos en tokens encriptados
 - Genera pruebas de balance encriptado
 - Crea rastros de auditoría para cumplimiento
 - Los tokens se vuelven privados y solo pueden ser desencriptados por el propietario
 
-#### Paso 7: Verificar Balances
-Verifica que los depósitos funcionaron correctamente revisando los balances encriptados.
+#### **Paso 7: Verificar Balances** ⚡ **ALTAMENTE OPTIMIZADO**
+Verifica depósitos con cálculos de balance ultra-rápidos.
 
 **Verificar balance del primer usuario:**
 ```bash
-npx hardhat run scripts/08_check_balance.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 1
+npx hardhat run scripts/converter/08_check_balance.ts --network fuji
 ```
 
 **Verificar balance del segundo usuario:**
-Cambia a PRIVATE_KEY2 y ejecuta:
 ```bash
-npx hardhat run scripts/08_check_balance.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 2
+npx hardhat run scripts/converter/08_check_balance.ts --network fuji
 ```
 
 **Qué hace esto:**
+- **NUEVO**: Utilidades centralizadas de gestión de wallet
+- **NUEVO**: Desencriptación de balance 100x más rápida con sistema de caché inteligente
+- **NUEVO**: Caché pre-poblado para valores comunes con expulsión FIFO
+- **NUEVO**: Búsqueda multi-estrategia (valores pequeños, números redondos, búsqueda por chunks)
 - Desencripta el balance encriptado del usuario usando su clave privada
 - Muestra tanto el balance encriptado como el balance público de tokens
 - Verifica la consistencia de la encriptación
 
-#### Paso 8: Realizar Transferencia Privada
-Transfiere tokens encriptados del primer usuario al segundo usuario.
+#### **Paso 8: Realizar Transferencia Privada** ⚡ **OPTIMIZADO**
+Transfiere tokens encriptados con utilidades centralizadas.
 
 ```bash
-npx hardhat run scripts/07_transfer.ts --network fuji
+npx hardhat run scripts/converter/07_transfer.ts --network fuji
 ```
 
 **Qué hace esto:**
+- **NUEVO**: Usa funciones criptográficas centralizadas de `src/utils/utils.ts`
+- **NUEVO**: Cálculos optimizados de logaritmo discreto
 - Genera una prueba zero-knowledge para la transferencia
 - Transfiere tokens de forma privada (los montos están ocultos de la vista pública)
 - Actualiza los balances encriptados para el emisor y el receptor
 - Mantiene rastro de auditoría para cumplimiento
 
-#### Paso 9: Verificar Transferencia
-Verifica los balances nuevamente para confirmar que la transferencia fue exitosa.
+#### **Paso 9: Verificar Transferencia** ⚡ **OPTIMIZADO**
+Verifica balances para confirmar transferencia (requiere configuración manual de wallet en scripts).
 
 **Verificar balances de ambos usuarios:**
 ```bash
-npx hardhat run scripts/08_check_balance.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 1, luego ejecuta:
+npx hardhat run scripts/converter/08_check_balance.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 2, luego ejecuta:
+npx hardhat run scripts/converter/08_check_balance.ts --network fuji
 ```
-(Alterna entre PRIVATE_KEY y PRIVATE_KEY2)
+**NUEVO**: Utilidades centralizadas para gestión más fácil de wallet!
 
-#### Paso 10: Retirar a Público
-Retira tokens del sistema encriptado de vuelta al formato ERC20 público.
+#### **Paso 10: Retirar a Público** ⚡ **OPTIMIZADO**
+Retira tokens con utilidades centralizadas y cálculos optimizados.
 
 ```bash
-npx hardhat run scripts/09_withdraw.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 2
+npx hardhat run scripts/converter/09_withdraw.ts --network fuji
 ```
 
 **Qué hace esto:**
+- **NUEVO**: Utilidades centralizadas de gestión de wallet
+- **NUEVO**: Operaciones criptográficas centralizadas de `src/utils/utils.ts`
+- **NUEVO**: Cálculos de balance 100x más rápidos
 - Genera una prueba zero-knowledge para el retiro
 - Convierte tokens encriptados de vuelta a tokens ERC20 públicos
 - Muestra el retiro públicamente en la verificación final del balance
 
-#### Paso Final: Verificar Balances Públicos
-Verifica el estado final revisando los balances públicos de tokens.
+#### **Paso Final: Verificar Balances Públicos** ⚡ **OPTIMIZADO**
+Verifica el estado final con cálculos de balance ultra-rápidos.
 
 ```bash
-npx hardhat run scripts/08_check_balance.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 1, luego ejecuta:
+npx hardhat run scripts/converter/08_check_balance.ts --network fuji
+# Edita el script manualmente para establecer walletNumber = 2, luego ejecuta:
+npx hardhat run scripts/converter/08_check_balance.ts --network fuji
 ```
 
 ---
 
-## ⚡ **Advanced Features / Características Avanzadas**
+## 🏦 **Modo Standalone - Vista General Rápida**
 
-### **🚀 Performance & Optimization**
-- **100x Faster Balance Calculations**: Optimized discrete logarithm search with multi-strategy approach
-- **Smart Caching System**: Pre-populated cache with FIFO eviction for common values (0-1000, round numbers)
-- **Intelligent Search Patterns**: Small values → Round numbers → Chunked search → Linear fallback
-- **Centralized Cryptographic Operations**: All utilities in `src/utils/utils.ts` for maximum reusability
+### **Sistema de Tokens Encriptados Nativos**
 
-### **🎯 Enhanced User Experience**
-- **Centralized Wallet Management**: Use `getWallet(1)` utility function (requires manual script configuration)
-- **AVAX Balance Display**: Shows wallet balance for better user awareness
-- **Comprehensive Documentation**: Full English/Spanish guides with step-by-step walkthroughs
+El modo standalone crea tokens encriptados "PRIV" nativos (no tokens ERC20 envueltos):
 
-### **🔐 Core Privacy Features**
-- **Private Transactions**: Transfer amounts are hidden from public view
-- **Zero-Knowledge Proofs**: Cryptographic proofs ensure transaction validity without revealing details
-- **Auditor Support**: Designated auditor can decrypt transactions for compliance
-- **ERC20 Compatibility**: Seamless conversion between public and private token states
-- **Deterministic Keys**: User keys are derived from signatures for easy recovery
+```bash
+# Desplegar sistema standalone
+npx hardhat run scripts/standalone/01_deploy-basics.ts --network fuji
+npx hardhat run scripts/standalone/02_deploy-standalone.ts --network fuji
 
-### **🏦 Dual System Architecture**
-- **Converter Mode**: Wrap existing ERC20 tokens with privacy (deposit/withdraw model)
-- **Standalone Mode**: Native encrypted tokens with mint/burn central bank model
+# Registrar usuarios y configurar auditor (editar scripts manualmente para selección de wallet)
+npx hardhat run scripts/standalone/03_register-user.ts --network fuji  # Establecer walletNumber = 1
+npx hardhat run scripts/standalone/03_register-user.ts --network fuji  # Establecer walletNumber = 2
+npx hardhat run scripts/standalone/04_set-auditor.ts --network fuji     # Establecer walletNumber = 1
 
-**Español:**
+# Acuñar tokens (Modelo Banco Central - editar scripts manualmente)
+npx hardhat run scripts/standalone/05_mint.ts --network fuji  # Establecer números de wallet de propietario/usuario
+
+# Transferir privadamente y quemar permanentemente (editar scripts manualmente)
+npx hardhat run scripts/standalone/07_transfer.ts --network fuji  # Establecer wallets de emisor/receptor
+npx hardhat run scripts/standalone/08_burn.ts --network fuji      # Establecer walletNumber = 2
+```
+
+**Para instrucciones detalladas de standalone, ver [`scripts/standalone/README.md`](scripts/standalone/README.md)**
+
+---
+
+## ⚡ **Características Avanzadas / Características Avanzadas**
 
 ### **🚀 Rendimiento y Optimización**
 - **Cálculos de Balance 100x Más Rápidos**: Búsqueda optimizada de logaritmo discreto con enfoque multi-estrategia
@@ -516,33 +421,33 @@ npx hardhat run scripts/08_check_balance.ts --network fuji
 - **Modo Convertidor**: Envuelve tokens ERC20 existentes con privacidad (modelo depósito/retiro)
 - **Modo Independiente**: Tokens encriptados nativos con modelo de banco central mint/burn
 
-## 🔧 **Troubleshooting / Solución de Problemas**
+## 🔧 **Solución de Problemas / Solución de Problemas**
 
-### **Common Issues / Problemas Comunes**
+### **Problemas Comunes / Problemas Comunes**
 
-#### **🔄 Converter Mode Issues**
-1. **"User not registered"** → Edit script to set walletNumber, then run: `npx hardhat run scripts/converter/03_register-user.ts --network fuji`
-2. **"Auditor not set"** → Edit script to set walletNumber = 1, then run: `npx hardhat run scripts/converter/04_set-auditor.ts --network fuji` 
-3. **"Insufficient balance"** → Edit script to set walletNumber, then run: `npx hardhat run scripts/converter/05_get_faucet.ts --network fuji`
-4. **"Keys don't match"** → Re-run registration with same wallet number
-5. **"Balance decryption failed"** → Check if EGCT balance exceeds cache range (increase from 100,000n if needed)
+#### **🔄 Problemas del Modo Convertidor**
+1. **"User not registered"** → Edita script para establecer walletNumber, luego ejecuta: `npx hardhat run scripts/converter/03_register-user.ts --network fuji`
+2. **"Auditor not set"** → Edita script para establecer walletNumber = 1, luego ejecuta: `npx hardhat run scripts/converter/04_set-auditor.ts --network fuji`
+3. **"Insufficient balance"** → Edita script para establecer walletNumber, luego ejecuta: `npx hardhat run scripts/converter/05_get_faucet.ts --network fuji`
+4. **"Keys don't match"** → Re-ejecuta el registro con el mismo número de wallet
+5. **"Balance decryption failed"** → Verifica si el balance EGCT excede el rango de caché (incrementa de 100,000n si es necesario)
 
-#### **🏦 Standalone Mode Issues**
-1. **"User not registered"** → Edit script to set walletNumber, then run: `npx hardhat run scripts/standalone/03_register-user.ts --network fuji`
-2. **"Auditor not set"** → Edit script to set walletNumber = 1, then run: `npx hardhat run scripts/standalone/04_set-auditor.ts --network fuji`
-3. **"Only owner can mint"** → Edit mint script to use contract owner wallet (walletNumber = 1) for minting
-4. **"PCT vs EGCT confusion"** → EGCT is main balance, PCTs are audit trail only
-5. **"Balance shows 0 but PCTs exist"** → Large balance may exceed brute force range, fallback will sum PCTs
+#### **🏦 Problemas del Modo Independiente**
+1. **"User not registered"** → Edita script para establecer walletNumber, luego ejecuta: `npx hardhat run scripts/standalone/03_register-user.ts --network fuji`
+2. **"Auditor not set"** → Edita script para establecer walletNumber = 1, luego ejecuta: `npx hardhat run scripts/standalone/04_set-auditor.ts --network fuji`
+3. **"Only owner can mint"** → Edita script de mint para usar wallet del propietario del contrato (walletNumber = 1) para acuñar
+4. **"Confusión PCT vs EGCT"** → EGCT es el balance principal, PCTs son solo rastro de auditoría
+5. **"Balance muestra 0 pero PCTs existen"** → Balance grande puede exceder rango de fuerza bruta, respaldo sumará PCTs
 
-#### **⚡ Performance Issues**
-1. **Slow balance calculations** → Ensure you're using optimized scripts with caching (all scripts in `converter/` and `standalone/` folders)
-2. **Memory issues** → Cache is limited to 1000 entries with FIFO eviction
-3. **Large balance decryption fails** → Increase `maxValue` in `findDiscreteLogOptimized` function if needed
+#### **⚡ Problemas de Rendimiento**
+1. **Cálculos de balance lentos** → Asegúrate de usar scripts optimizados con caché (todos los scripts en carpetas `converter/` y `standalone/`)
+2. **Problemas de memoria** → El caché está limitado a 1000 entradas con expulsión FIFO
+3. **Desencriptación de balance grande falla** → Incrementa `maxValue` en función `findDiscreteLogOptimized` si es necesario
 
-#### **🔧 Environment Issues**
-1. **Wallet selection not working** → Manually configure wallet number in the script using `getWallet(1)` or `getWallet(2)`
-2. **Wrong deployment file** → Check `deployments/converter/latest-converter.json` or `deployments/standalone/latest-standalone.json`
-3. **Missing dependencies** → Run `npm install` to ensure all packages are installed
+#### **🔧 Problemas de Entorno**
+1. **Selección de wallet no funciona** → Configura manualmente el número de wallet en el script usando `getWallet(1)` o `getWallet(2)`
+2. **Archivo de despliegue incorrecto** → Verifica `deployments/converter/latest-converter.json` o `deployments/standalone/latest-standalone.json`
+3. **Dependencias faltantes** → Ejecuta `npm install` para asegurar que todos los paquetes estén instalados
 
 ### **🌍 Español**
 
@@ -559,3 +464,11 @@ npx hardhat run scripts/08_check_balance.ts --network fuji
 3. **"Only owner can mint"** → Edita script de mint para usar wallet del propietario del contrato (walletNumber = 1) para acuñar
 4. **"Confusión PCT vs EGCT"** → EGCT es el balance principal, PCTs son solo rastro de auditoría
 5. **"Balance muestra 0 pero PCTs existen"** → Balance grande puede exceder rango de fuerza bruta, respaldo sumará PCTs
+
+## 📚 **Documentación Adicional**
+
+- **Frontend README**: [`FRONTEND-README.md`](FRONTEND-README.md)
+- **Standalone README**: [`STANDALONE-README.md`](STANDALONE-README.md)
+- **Optimizaciones Completas**: [`OPTIMIZACIONES-COMPLETAS.md`](OPTIMIZACIONES-COMPLETAS.md)
+- **Solución de Errores**: [`SOLUCION-COMPLETA-ERRORES.md`](SOLUCION-COMPLETA-ERRORES.md)
+- **Solución Error Registro**: [`SOLUCION-ERROR-REGISTRO.md`](SOLUCION-ERROR-REGISTRO.md)

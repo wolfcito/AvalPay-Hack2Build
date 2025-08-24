@@ -9,7 +9,7 @@ const main = async () => {
     const WALLET_NUMBER = 1;
     
     const wallet = await getWallet(WALLET_NUMBER);
-    const auditorPublicKeyAddress = await wallet.getAddress();
+    const auditorPublicKeyAddress = "0x0db58fFf8F2872c43785bb884397eDaD474b0ede";
     
     // Read addresses from the latest deployment
     const deploymentPath = path.join(__dirname, "../../deployments/converter/latest-converter.json");

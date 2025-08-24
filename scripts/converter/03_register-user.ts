@@ -8,10 +8,10 @@ import type { RegistrationCircuit } from "../../generated-types/zkit";
 const main = async () => {
     // Configure which wallet to use: 1 for first signer, 2 for second signer
     // Can be overridden with environment variable: WALLET_NUMBER=1 or WALLET_NUMBER=2
-    const WALLET_NUMBER = 1;
+    const WALLET_NUMBER = 2;
     
     const wallet = await getWallet(WALLET_NUMBER);
-    const userAddress = await wallet.getAddress();
+    const userAddress = "0x5E4aC881cCa68eB9D39D7ca55223EbD181204c0f";
     
     // Read deployment addresses
     const deploymentPath = path.join(__dirname, "../../deployments/converter/latest-converter.json");
